@@ -97,7 +97,7 @@ export default function SponsorsPage() {
 				<div className="space-y-2">
 					<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Our Sponsors</h1>
 					<p className="max-w-[900px] text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-						We're proud to partner with these amazing companies who support our gaming community.
+						We&apos;re proud to partner with these amazing companies who support our gaming community.
 					</p>
 				</div>
 			</div>
@@ -110,7 +110,7 @@ export default function SponsorsPage() {
 
 				<TabsContent value="sponsors">
 					<div className="space-y-12 grid grid-cols-2 md:grid-cols-3 gap-4 items-start">
-						{sponsors.map((company, indx) => (
+						{sponsors.map(company => (
 							<Card key={company.name} className="overflow-hidden max-h-96 h-full">
 								<div className="p-6 flex justify-center items-center bg-gray-800 border-b border-gray-700">
 									<Image

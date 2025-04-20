@@ -1,9 +1,7 @@
 'use client'
-
 import type React from 'react'
 
 import { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,9 +13,6 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { MessageSquare } from 'lucide-react'
 
 export default function TournamentSignupPage() {
-	const searchParams = useSearchParams()
-	const tournamentId = searchParams.get('id') || '1'
-
 	const [formData, setFormData] = useState({
 		teamName: '',
 		captainName: '',
