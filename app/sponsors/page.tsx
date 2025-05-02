@@ -49,19 +49,19 @@ export default function SponsorsPage() {
 	const sponsors = [
 		{
 			name: 'PowerEnergy',
-			logo: '/placeholder.svg?height=100&width=200&text=PowerEnergy',
+			logo: 'https://picsum.photos/200/300',
 			description: 'Energy drink brand fueling gamers worldwide with performance-enhancing beverages.',
 			website: 'https://example.com/powerenergy',
 		},
 		{
 			name: 'GearPro',
-			logo: '/placeholder.svg?height=100&width=200&text=GearPro',
+			logo: 'https://picsum.photos/200/300',
 			description: 'Professional gaming peripherals designed for competitive players.',
 			website: 'https://example.com/gearpro',
 		},
 		{
 			name: 'NetSpeed',
-			logo: '/placeholder.svg?height=100&width=200&text=NetSpeed',
+			logo: 'https://picsum.photos/200/300',
 			description: 'High-speed internet provider optimized for gaming and streaming.',
 			website: 'https://example.com/netspeed',
 		},
@@ -109,7 +109,7 @@ export default function SponsorsPage() {
 				</TabsList>
 
 				<TabsContent value="sponsors">
-					<div className="space-y-12 grid grid-cols-2 md:grid-cols-3 gap-4 items-start">
+					<div className="space-y-12 grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
 						{sponsors.map(company => (
 							<Card key={company.name} className="overflow-hidden max-h-96 h-full">
 								<div className="p-6 flex justify-center items-center bg-gray-800 border-b border-gray-700">
@@ -118,7 +118,7 @@ export default function SponsorsPage() {
 										alt={company.name}
 										width={200}
 										height={100}
-										className="object-contain"
+										className="object-cover h-32"
 									/>
 								</div>
 								<CardContent className="p-6">
@@ -185,22 +185,6 @@ export default function SponsorsPage() {
 									</div>
 
 									<div className="space-y-2">
-										<Label htmlFor="sponsorshipType">Sponsorship Tier</Label>
-										<Select value={formData.sponsorshipType} onValueChange={value => handleSelectChange('sponsorshipType', value)}>
-											<SelectTrigger id="sponsorshipType">
-												<SelectValue placeholder="Select sponsorship tier" />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="platinum">Platinum</SelectItem>
-												<SelectItem value="gold">Gold</SelectItem>
-												<SelectItem value="silver">Silver</SelectItem>
-												<SelectItem value="bronze">Bronze</SelectItem>
-												<SelectItem value="custom">Custom Package</SelectItem>
-											</SelectContent>
-										</Select>
-									</div>
-
-									<div className="space-y-2">
 										<Label htmlFor="message">Message</Label>
 										<Textarea
 											id="message"
@@ -213,7 +197,7 @@ export default function SponsorsPage() {
 										/>
 									</div>
 								</CardContent>
-								<CardFooter>
+								<CardFooter className="mt-4">
 									<Button type="submit" className="w-full bg-purple-700 hover:bg-purple-800" disabled={isSubmitting}>
 										{isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
 									</Button>

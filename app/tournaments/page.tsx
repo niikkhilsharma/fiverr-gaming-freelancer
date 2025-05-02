@@ -9,7 +9,7 @@ export default function TournamentsPage() {
 		{
 			id: 1,
 			title: 'Summer Championship 2023',
-			game: 'Fortnite',
+			game: 'THE FINALS',
 			date: 'August 15, 2023',
 			time: '6:00 PM EST',
 			teams: '32',
@@ -21,7 +21,7 @@ export default function TournamentsPage() {
 		{
 			id: 2,
 			title: 'Weekly Showdown',
-			game: 'Valorant',
+			game: 'THE FINALS',
 			date: 'August 10, 2023',
 			time: '7:00 PM EST',
 			teams: '16',
@@ -32,7 +32,7 @@ export default function TournamentsPage() {
 		{
 			id: 3,
 			title: 'Rocket League Cup',
-			game: 'Rocket League',
+			game: 'THE FINALS',
 			date: 'August 20, 2023',
 			time: '5:00 PM EST',
 			teams: '24',
@@ -43,7 +43,7 @@ export default function TournamentsPage() {
 		{
 			id: 4,
 			title: 'Spring Invitational',
-			game: 'League of Legends',
+			game: 'THE FINALS',
 			date: 'July 25, 2023',
 			time: '6:00 PM EST',
 			teams: '8',

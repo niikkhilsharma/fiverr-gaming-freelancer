@@ -15,7 +15,7 @@ export default function Header() {
 		{ name: 'Home', href: '/' },
 		{ name: 'Tournaments', href: '/tournaments' },
 		{ name: 'Merchandise', href: '/merchandise' },
-		{ name: 'Scoreboard', href: '/scoreboard' },
+		{ name: 'leaderboard', href: '/leaderboard' },
 		{ name: 'Sponsors', href: '/sponsors' },
 	]
 

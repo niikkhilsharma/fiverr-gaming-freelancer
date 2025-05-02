@@ -15,7 +15,7 @@ export default function FeaturedTournament() {
 				/>
 				<div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/60"></div>
 				<div className="absolute bottom-0 left-0 p-4">
-					<span className="px-2 py-1 text-xs font-medium bg-purple-700 text-white rounded-md">Fortnite</span>
+					<span className="px-2 py-1 text-xs font-medium bg-purple-700 text-white rounded-md">THE FINALS</span>
 				</div>
 			</div>
 			<CardContent className="p-6">
