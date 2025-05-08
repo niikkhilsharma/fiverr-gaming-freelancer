@@ -20,9 +20,8 @@ export default function NavbarProfileDropdown({
 			<DropdownMenu>
 				<DropdownMenuTrigger>
 					<Link
-						className="w-full h-full"
 						href={'/profile/edit'}
-						className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'rounded-full p-0')}>
+						className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'rounded-full p-0 w-full h-full')}>
 						{!isAuthenticated ? (
 							<UserRound />
 						) : (

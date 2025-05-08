@@ -41,27 +41,6 @@ export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] 
 		}, 1500)
 	}
 
-	const sponsors = [
-		{
-			name: 'PowerEnergy',
-			logo: 'https://picsum.photos/200/300',
-			description: 'Energy drink brand fueling gamers worldwide with performance-enhancing beverages.',
-			website: 'https://example.com/powerenergy',
-		},
-		{
-			name: 'GearPro',
-			logo: 'https://picsum.photos/200/300',
-			description: 'Professional gaming peripherals designed for competitive players.',
-			website: 'https://example.com/gearpro',
-		},
-		{
-			name: 'NetSpeed',
-			logo: 'https://picsum.photos/200/300',
-			description: 'High-speed internet provider optimized for gaming and streaming.',
-			website: 'https://example.com/netspeed',
-		},
-	]
-
 	if (isSubmitted) {
 		return (
 			<div className="container mx-auto py-12 md:py-16 lg:py-20 flex items-center justify-center">

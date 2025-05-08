@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma/prisma'
 
 // This would be your database client in a real application
 // For this example, we'll use a simple in-memory store
-const leaderboardEntries: any[] = [
+const leaderboardEntries = [
 	{
 		id: 'clq1234567',
 		teamId: 'team1',
@@ -41,11 +41,6 @@ const updateLeaderboardSchema = leaderboardSchema.extend({
 	id: z.string().min(1),
 })
 
-// Helper function to generate a CUID-like ID
-function generateId() {
-	return 'clq' + Math.random().toString(36).substring(2, 11)
-}
-
 // GET handler - Fetch all leaderboard entries
 export async function GET() {
 	try {
@@ -53,6 +48,7 @@ export async function GET() {
 		console.log(leaderboardEntries)
 		return NextResponse.json({ leaderboard: leaderboardEntries })
 	} catch (error) {
+		console.log(error)
 		return NextResponse.json({ message: 'Failed to fetch leaderboard entries' }, { status: 500 })
 	}
 }
@@ -140,6 +136,7 @@ export async function DELETE(request: NextRequest) {
 
 		return NextResponse.json({ message: 'Leaderboard entry deleted successfully' })
 	} catch (error) {
+		console.log(error)
 		return NextResponse.json({ message: 'Failed to delete leaderboard entry' }, { status: 500 })
 	}
 }

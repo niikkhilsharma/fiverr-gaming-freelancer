@@ -10,11 +10,12 @@ cloudinary.config({
 })
 
 // Get all sponsors
-export async function GET(request: Request) {
+export async function GET() {
 	try {
 		const sponsors = await prisma.sponsors.findMany()
 		return NextResponse.json({ sponsors })
 	} catch (error) {
+		console.log(error)
 		return NextResponse.json({ error: 'Failed to fetch sponsors' })
 	}
 }
@@ -72,6 +73,7 @@ export async function POST(request: Request) {
 		})
 		return NextResponse.json({ sponsor })
 	} catch (error) {
+		console.log(error)
 		return NextResponse.json({ error: 'Failed to create sponsor' })
 	}
 }
@@ -100,6 +102,7 @@ export async function DELETE(request: Request) {
 
 		return NextResponse.json({ sponsor })
 	} catch (error) {
+		console.log(error)
 		return NextResponse.json({ error: 'Failed to delete sponsor' }, { status: 500 })
 	}
 }

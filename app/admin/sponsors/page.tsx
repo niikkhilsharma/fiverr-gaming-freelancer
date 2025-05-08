@@ -202,7 +202,7 @@ export default function AddSponsorsPage() {
 									<FormField
 										control={form.control}
 										name="logo"
-										render={({ field: { onChange, value, ...rest } }) => (
+										render={({ field: { onChange, ...rest } }) => (
 											<FormItem>
 												<FormLabel>Logo</FormLabel>
 												<FormControl>
