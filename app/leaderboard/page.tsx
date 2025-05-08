@@ -1,19 +1,45 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import prisma from '@/lib/prisma/prisma'
 
-export default function LeaderboardPage() {
-	const teamRankings = {
-		'THE FINALS': [
-			{ rank: 1, team: 'Team Alpha', points: 3250, wins: 12, logo: 'https://picsum.photos/200/300' },
-			{ rank: 2, team: 'Omega Squad', points: 2980, wins: 10, logo: 'https://picsum.photos/200/300' },
-			{ rank: 3, team: 'Victory Royale', points: 2750, wins: 8, logo: 'https://picsum.photos/200/300' },
-			{ rank: 4, team: 'Storm Chasers', points: 2520, wins: 7, logo: 'https://picsum.photos/200/300' },
-			{ rank: 5, team: 'Build Masters', points: 2340, wins: 6, logo: 'https://picsum.photos/200/300' },
-		],
-	}
+// Define interfaces for our data structures
+interface LeaderboardEntry {
+	id: string
+	teamId: string
+	tournamentId: string
+	teamName: string
+	points: number
+}
+
+// We no longer need a separate interface for ranked entries
+type TournamentGroups = {
+	[tournamentId: string]: LeaderboardEntry[]
+}
+
+export default async function LeaderboardPage() {
+	// Fetch leaderboard entries from database
+	const leaderboardEntries: LeaderboardEntry[] = await prisma.leaderboard.findMany({
+		orderBy: {
+			points: 'desc',
+		},
+	})
+
+	// Group entries by tournamentId
+	const tournamentGroups: TournamentGroups = leaderboardEntries.reduce<TournamentGroups>((groups, entry) => {
+		if (!groups[entry.tournamentId]) {
+			groups[entry.tournamentId] = []
+		}
+		groups[entry.tournamentId].push(entry)
+		return groups
+	}, {})
+
+	// Sort teams within each tournament by points (highest first)
+	Object.keys(tournamentGroups).forEach(tournamentId => {
+		tournamentGroups[tournamentId].sort((a, b) => b.points - a.points)
+	})
 
 	return (
-		<div className="container mx-auto py-12 px-4 sm:px-0 md:py-16 lg:py-20 ">
+		<div className="container mx-auto py-12 px-4 sm:px-0 md:py-16 lg:py-20">
 			<div className="flex flex-col items-center justify-center space-y-4 text-center mb-8">
 				<div className="space-y-2">
 					<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Leaderboard</h1>
@@ -24,31 +50,47 @@ export default function LeaderboardPage() {
 			</div>
 
 			<div className="grid gap-8">
-				<Card className="p-0 overflow-hidden">
-					<CardContent className="p-0">
-						<div className="grid grid-cols-12 bg-muted p-3 font-medium">
-							<div className="col-span-1 text-center">S.no</div>
-							<div className="col-span-5">Team</div>
-							<div className="col-span-3 text-center">Wins</div>
-							<div className="col-span-3 text-center">Points</div>
-						</div>
-
-						{teamRankings['THE FINALS'].map(team => (
-							<div key={team.rank} className="grid grid-cols-12 p-3 border-t">
-								<div className="col-span-1 text-center font-medium">{team.rank}</div>
-								<div className="col-span-5 flex gap-2 items-center">
-									<Avatar>
-										<AvatarImage src={team.logo} alt={team.team} />
-										<AvatarFallback>CN</AvatarFallback>
-									</Avatar>
-									<span>{team.team}</span>
+				{Object.keys(tournamentGroups).map(tournamentId => (
+					<div key={tournamentId} className="space-y-4">
+						<h2 className="text-2xl font-bold">Tournament: {tournamentId}</h2>
+						<Card className="p-0 overflow-hidden">
+							<CardContent className="p-0">
+								<div className="overflow-x-auto">
+									<table className="w-full">
+										{/* Header */}
+										<thead>
+											<tr className="bg-muted">
+												<th className="p-3 text-left font-medium text-sm">S.No</th>
+												<th className="p-3 text-left font-medium text-sm">Team</th>
+												<th className="p-3 text-center font-medium text-sm hidden md:table-cell">Team ID</th>
+												<th className="p-3 text-center font-medium text-sm">Points</th>
+											</tr>
+										</thead>
+										{/* Data Rows */}
+										<tbody>
+											{tournamentGroups[tournamentId].map((entry, indx) => (
+												<tr key={entry.id} className="border-t">
+													<td className="p-3 text-sm">{indx + 1}</td>
+													<td className="p-3 text-sm">
+														<div className="flex items-center gap-2">
+															<Avatar className="h-8 w-8">
+																<AvatarImage src={entry.teamId || ''} alt="Profile picture" />
+																<AvatarFallback>{entry.teamName.substring(0, 2).toUpperCase()}</AvatarFallback>
+															</Avatar>
+															<span className="hidden sm:inline">{entry.teamName}</span>
+														</div>
+													</td>
+													<td className="p-3 text-sm text-center hidden md:table-cell">{entry.teamId}</td>
+													<td className="p-3 text-sm text-center font-medium">{entry.points}</td>
+												</tr>
+											))}
+										</tbody>
+									</table>
 								</div>
-								<div className="col-span-3 text-center">{team.wins}</div>
-								<div className="col-span-3 text-center font-medium">{team.points}</div>
-							</div>
-						))}
-					</CardContent>
-				</Card>
+							</CardContent>
+						</Card>
+					</div>
+				))}
 			</div>
 		</div>
 	)

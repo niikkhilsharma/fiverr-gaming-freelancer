@@ -7,14 +7,14 @@ import { Sheet, SheetTitle, SheetContent, SheetTrigger } from '@/components/ui/s
 import { Menu } from 'lucide-react'
 import SocialLinks from '@/components/social-links'
 import Image from 'next/image'
+import NavbarProfileDropdown from './navbar-profile-dropdown'
 
-export default function Header() {
+export default function Navbar({ avatar }: { avatar?: string }) {
 	const [isOpen, setIsOpen] = useState(false)
 
 	const navigation = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Tournaments', href: '/tournaments' },
-		{ name: 'Merchandise', href: '/merchandise' },
 		{ name: 'leaderboard', href: '/leaderboard' },
 		{ name: 'Sponsors', href: '/sponsors' },
 	]
@@ -44,6 +44,7 @@ export default function Header() {
 
 				<div className="hidden md:flex items-center gap-4">
 					<SocialLinks />
+					{<NavbarProfileDropdown isAuthenticated={!!avatar} avatar={avatar} />}
 				</div>
 
 				<Sheet open={isOpen} onOpenChange={setIsOpen}>

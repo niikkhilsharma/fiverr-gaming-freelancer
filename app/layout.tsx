@@ -2,8 +2,10 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import './globals.css'
-import Header from '@/components/header'
 import Footer from '@/components/footer'
+import { auth } from '@/auth'
+import Navbar from '@/components/navbar'
+import { Toaster } from 'sonner'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -20,19 +22,25 @@ export const metadata: Metadata = {
 	description:
 		'Join our thriving gaming community. Compete in tournaments, connect with fellow gamers, and level up your gaming experience.',
 }
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+	const session = await auth()
+	const user = session?.user
+
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<NextThemesProvider attribute={'class'} themes={['light', 'dark']} enableSystem defaultTheme="dark">
-					<Header />
-					<main>{children}</main>
-					<Footer />
-				</NextThemesProvider>
+			<body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+				{user?.image ? <Navbar avatar={user.image} /> : <Navbar />}
+				<main className="flex-1 w-full! flex flex-col justify-center">
+					<NextThemesProvider attribute={'class'} themes={['light', 'dark']} enableSystem defaultTheme="dark">
+						{children}
+						<Toaster />
+					</NextThemesProvider>
+				</main>
+				<Footer />
 			</body>
 		</html>
 	)

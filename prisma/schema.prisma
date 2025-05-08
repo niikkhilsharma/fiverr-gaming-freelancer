@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id              String   @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String   @unique
+  password        String
+  role            UserRole
+  avatarUrl       String?
+  discordUsername String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Sponsors {
+  id          String  @id @default(cuid())
+  companyName String
+  description String
+  logo        String
+  website     String?
+}
+
+model BecomeSponsor {
+  id          String @id @default(cuid())
+  name        String
+  email       String
+  companyName String
+  message     String
+}
+
+model Tournament {
+  id                   String   @id @default(cuid())
+  name                 String
+  description          String
+  image                String
+  startDateTime        DateTime
+  endDateTime          DateTime
+  registeredTeamsCount Int
+  isRegistrationOpen   Boolean  @default(true)
+  prizePool            Int
+  streamingUrl         String?
+  maxTeamCount         Int?
+  maxTeamPlayers       Int?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Registration {
+  id           String @id @default(cuid())
+  tournamentId String
+  teamId       String
+}
+
+model TeamPlayer {
+  id    String @id @default(cuid())
+  name  String
+  email String
+}
+
+model Team {
+  id           String   @id @default(cuid())
+  teamName     String
+  captainEmail String
+  players      Json[] //array of users emails
+  tournamentId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Leaderboard {
+  id           String @id @default(cuid())
+  teamId       String
+  tournamentId String
+  teamName     String
+  points       Int
+}

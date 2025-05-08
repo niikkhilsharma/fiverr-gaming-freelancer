@@ -5,8 +5,21 @@ import { MessageSquare, Trophy, ShoppingBag, Medal, Users } from 'lucide-react'
 import FeaturedTournament from '@/components/featured-tournament'
 import SocialLinks from '@/components/social-links'
 import LatestScores from '@/components/latest-scores'
+import prisma from '@/lib/prisma/prisma'
 
-export default function Home() {
+export default async function Home() {
+	const upcomingTournaments = await prisma.tournament.findMany({
+		where: {
+			endDateTime: {
+				gt: new Date(),
+			},
+		},
+		orderBy: {
+			endDateTime: 'asc',
+		},
+		take: 1,
+	})
+
 	return (
 		<div className="flex flex-col min-h-screen">
 			{/* Hero Section */}
@@ -35,7 +48,7 @@ export default function Home() {
 									</Button>
 								</Link>
 							</div>
-							<SocialLinks className="mt-6" />
+							<SocialLinks />
 						</div>
 						<Image
 							src="https://picsum.photos/200/300"
@@ -61,12 +74,12 @@ export default function Home() {
 						</div>
 					</div>
 					<div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-						<FeaturedTournament />
+						<FeaturedTournament tournament={upcomingTournaments[0]} />
 						<div className="flex flex-col justify-center space-y-4">
 							<ul className="grid gap-3">
 								<li className="flex items-center gap-2">
 									<Trophy className="h-5 w-5 text-purple-600" />
-									<span>$1,000 Prize Pool</span>
+									<span>${upcomingTournaments[0].prizePool.toLocaleString()} Prize Pool</span>
 								</li>
 								<li className="flex items-center gap-2">
 									<Users className="h-5 w-5 text-purple-600" />
@@ -77,7 +90,7 @@ export default function Home() {
 									<span>Live on Discord</span>
 								</li>
 							</ul>
-							<Link href="/tournaments/signup">
+							<Link href={`/tournaments/signup?id=${upcomingTournaments[0].id}`}>
 								<Button size="lg" className="w-full md:w-auto bg-purple-600 hover:bg-purple-700">
 									Register Now
 								</Button>
@@ -97,7 +110,7 @@ export default function Home() {
 								Check out the results from our most recent tournaments.
 							</p>
 						</div>
-						<Link href="/scoreboard">
+						<Link href="/leaderboard">
 							<Button variant="outline" className="mt-4">
 								<Medal className="mr-2 h-4 w-4" />
 								View Full Scoreboard
