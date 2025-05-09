@@ -17,6 +17,7 @@ export default function Navbar({ avatar, isAdmin }: { avatar?: string; isAdmin: 
 		{ name: 'Tournaments', href: '/tournaments' },
 		{ name: 'leaderboard', href: '/leaderboard' },
 		{ name: 'Sponsors', href: '/sponsors' },
+		{ name: 'Rules', href: '/rules' },
 	]
 
 	const adminNavigation = [
