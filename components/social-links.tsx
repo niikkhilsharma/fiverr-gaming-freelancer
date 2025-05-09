@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Youtube, MessageSquare } from 'lucide-react'
+import { Youtube, MessageSquare, Twitch } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface SocialLinksProps {
@@ -14,7 +14,7 @@ export default function SocialLinks({ className, size = 'default' }: SocialLinks
 	return (
 		<div className={cn('flex items-center gap-4', className)}>
 			<Link
-				href="https://discord.gg/HeistGames"
+				href={'https://discord.gg/TSK93MGjqk'}
 				target="_blank"
 				rel="noopener noreferrer"
 				className={cn(
@@ -25,7 +25,18 @@ export default function SocialLinks({ className, size = 'default' }: SocialLinks
 				<span className="sr-only">Discord</span>
 			</Link>
 			<Link
-				href="https://youtube.com/HeistGames"
+				href={'https://m.twitch.tv/the_heist_games/home'}
+				target="_blank"
+				rel="noopener noreferrer"
+				className={cn(
+					'flex items-center justify-center rounded-full bg-[#5865F2] text-white transition-transform hover:scale-110',
+					buttonSize
+				)}>
+				<Twitch className={iconSize} />
+				<span className="sr-only">Discord</span>
+			</Link>
+			<Link
+				href={'https://m.youtube.com/@TheHeistGames'}
 				target="_blank"
 				rel="noopener noreferrer"
 				className={cn(

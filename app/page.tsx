@@ -20,6 +20,18 @@ export default async function Home() {
 		take: 1,
 	})
 
+	const latestTournament = await prisma.tournament.findFirst({
+		where: { endDateTime: { gt: new Date() } },
+		orderBy: { endDateTime: 'asc' },
+	})
+
+	const latestTournamentResult = await prisma.leaderboard.findMany({
+		where: { tournamentId: latestTournament?.id },
+		orderBy: { points: 'desc' },
+	})
+
+	const sponsors = await prisma.sponsors.findMany()
+
 	return (
 		<div className="flex flex-col min-h-screen">
 			{/* Hero Section */}
@@ -113,12 +125,12 @@ export default async function Home() {
 						<Link href="/leaderboard">
 							<Button variant="outline" className="mt-4">
 								<Medal className="mr-2 h-4 w-4" />
-								View Full Scoreboard
+								View All Scoreboard
 							</Button>
 						</Link>
 					</div>
 					<div className="mx-auto max-w-4xl py-12">
-						<LatestScores />
+						<LatestScores latestTournamentLeaderboard={latestTournamentResult} />
 					</div>
 				</div>
 			</section>
@@ -135,15 +147,9 @@ export default async function Home() {
 						</div>
 					</div>
 					<div className="mx-auto grid max-w-5xl grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-8 py-12">
-						{[1, 2, 3, 4].map(i => (
-							<div key={i} className="flex items-center justify-center p-4">
-								<Image
-									src={'https://picsum.photos/200/300'}
-									alt={`Sponsor ${i}`}
-									width={300}
-									height={300}
-									className="h-40 w-auto aspect-square rounded-md"
-								/>
+						{sponsors.map(i => (
+							<div key={i.id} className="flex items-center justify-center p-4">
+								<Image src={i.logo} alt={`Sponsor ${i}`} width={300} height={300} className="h-40 w-auto aspect-square rounded-md" />
 							</div>
 						))}
 					</div>
