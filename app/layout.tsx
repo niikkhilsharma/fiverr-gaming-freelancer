@@ -33,7 +33,7 @@ export default async function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
-				{user?.image ? <Navbar avatar={user.image} /> : <Navbar />}
+				{user?.image ? <Navbar avatar={user.image} isAdmin={user.role === 'ADMIN'} /> : <Navbar isAdmin={false} />}
 				<main className="flex-1 w-full! flex flex-col justify-center">
 					<NextThemesProvider attribute={'class'} themes={['light', 'dark']} enableSystem defaultTheme="dark">
 						{children}

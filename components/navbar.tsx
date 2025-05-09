@@ -9,15 +9,23 @@ import SocialLinks from '@/components/social-links'
 import Image from 'next/image'
 import NavbarProfileDropdown from './navbar-profile-dropdown'
 
-export default function Navbar({ avatar }: { avatar?: string }) {
+export default function Navbar({ avatar, isAdmin }: { avatar?: string; isAdmin: boolean }) {
 	const [isOpen, setIsOpen] = useState(false)
 
-	const navigation = [
+	const userNavigation = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Tournaments', href: '/tournaments' },
 		{ name: 'leaderboard', href: '/leaderboard' },
 		{ name: 'Sponsors', href: '/sponsors' },
 	]
+
+	const adminNavigation = [
+		{ name: 'Create Tournament', href: '/admin/create-tournaments' },
+		{ name: 'Add Leaderboard', href: '/admin/leaderboard' },
+		{ name: 'Add Sponsors', href: '/admin/sponsors' },
+	]
+
+	const navigation = isAdmin ? adminNavigation : userNavigation
 
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pr-3.5 sm:pr-0">
