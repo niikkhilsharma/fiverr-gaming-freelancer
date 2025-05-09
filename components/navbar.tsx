@@ -59,16 +59,16 @@ export default function Navbar({ avatar }: { avatar?: string }) {
 							<SheetTitle>
 								<Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
 									<Image
-										src={'/assets/images/logo/icon.png'}
+										src={'/assets/images/logo/logo.png'}
 										alt="HeistGames Logo"
 										width={3000}
 										height={3000}
-										className="mt-2 w-12 aspect-square"
+										className="mt-2 w-20 aspect-square"
 									/>
 								</Link>
 							</SheetTitle>
 
-							<nav className="mt-8 flex flex-col gap-4">
+							<nav className="mt-4 flex flex-col gap-4">
 								{navigation.map(item => (
 									<Link
 										key={item.name}
