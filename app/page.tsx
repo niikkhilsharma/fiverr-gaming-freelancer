@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { MessageSquare, Trophy, ShoppingBag, Medal, Users } from 'lucide-react'
+import { MessageSquare, Trophy, Medal, Users } from 'lucide-react'
 import FeaturedTournament from '@/components/featured-tournament'
 import SocialLinks from '@/components/social-links'
 import LatestScores from '@/components/latest-scores'
