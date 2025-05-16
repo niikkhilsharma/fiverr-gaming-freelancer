@@ -35,7 +35,7 @@ export default async function Home() {
 	return (
 		<div className="flex flex-col min-h-screen">
 			{/* Hero Section */}
-			<section className="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-purple-950 via-violet-900 to-indigo-950 text-white">
+			<section className="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-orange-950 via-orange-900 to-rose-950 text-white">
 				<div className="container px-4 md:px-6 mx-auto">
 					<div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_500px]">
 						<div className="flex flex-col justify-center space-y-4">
@@ -48,13 +48,13 @@ export default async function Home() {
 							</div>
 							<div className="flex flex-col gap-2 min-[400px]:flex-row">
 								<Link href="/tournaments">
-									<Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+									<Button size="lg">
 										<Trophy className="mr-2 h-4 w-4" />
 										Join Tournaments
 									</Button>
 								</Link>
 								<Link href="/merchandise">
-									<Button size="lg" variant="outline" className="border-purple-500 text-white hover:bg-purple-800">
+									<Button size="lg" variant="outline" className="text-white">
 										<ShoppingBag className="mr-2 h-4 w-4" />
 										Shop Merch
 									</Button>
@@ -90,20 +90,20 @@ export default async function Home() {
 						<div className="flex flex-col justify-center space-y-4">
 							<ul className="grid gap-3">
 								<li className="flex items-center gap-2">
-									<Trophy className="h-5 w-5 text-purple-600" />
+									<Trophy className="h-5 w-5 text-primary" />
 									<span>${upcomingTournaments[0].prizePool.toLocaleString()} Prize Pool</span>
 								</li>
 								<li className="flex items-center gap-2">
-									<Users className="h-5 w-5 text-purple-600" />
+									<Users className="h-5 w-5 text-primary" />
 									<span>32 Team Bracket</span>
 								</li>
 								<li className="flex items-center gap-2">
-									<MessageSquare className="h-5 w-5 text-purple-600" />
+									<MessageSquare className="h-5 w-5 text-primary" />
 									<span>Live on Discord</span>
 								</li>
 							</ul>
 							<Link href={`/tournaments/signup?id=${upcomingTournaments[0].id}`}>
-								<Button size="lg" className="w-full md:w-auto bg-purple-600 hover:bg-purple-700">
+								<Button size="lg" className="w-full md:w-auto">
 									Register Now
 								</Button>
 							</Link>
@@ -162,7 +162,7 @@ export default async function Home() {
 			</section>
 
 			{/* CTA */}
-			<section className="w-full py-12 md:py-16 lg:py-20 bg-purple-950 text-white">
+			<section className="w-full py-12 md:py-16 lg:py-20 bg-orange-950 text-white">
 				<div className="container px-4 md:px-6 mx-auto">
 					<div className="flex flex-col items-center justify-center space-y-4 text-center">
 						<div className="space-y-2">

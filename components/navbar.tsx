@@ -9,7 +9,7 @@ import SocialLinks from '@/components/social-links'
 import Image from 'next/image'
 import NavbarProfileDropdown from './navbar-profile-dropdown'
 
-export default function Navbar({ avatar, isAdmin }: { avatar?: string; isAdmin: boolean }) {
+export default function Navbar({ isAuth, avatar, isAdmin }: { isAuth: boolean; avatar?: string; isAdmin: boolean }) {
 	const [isOpen, setIsOpen] = useState(false)
 
 	const userNavigation = [
@@ -53,7 +53,7 @@ export default function Navbar({ avatar, isAdmin }: { avatar?: string; isAdmin: 
 
 				<div className="hidden md:flex items-center gap-4">
 					<SocialLinks />
-					{<NavbarProfileDropdown isAuthenticated={!!avatar} avatar={avatar} />}
+					{<NavbarProfileDropdown isAuthenticated={isAuth} avatar={avatar} />}
 				</div>
 
 				<Sheet open={isOpen} onOpenChange={setIsOpen}>

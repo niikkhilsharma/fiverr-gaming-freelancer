@@ -22,7 +22,7 @@ export async function GET() {
 
 const addSponsorSchema = z.object({
 	companyName: z.string().min(2),
-	description: z.string().min(10),
+	description: z.string().min(1),
 	logo: z.instanceof(File),
 	website: z.string().url().optional().or(z.literal('')),
 })

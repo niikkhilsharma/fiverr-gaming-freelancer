@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-// Import shadcn components
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -33,7 +32,8 @@ const sponsorFormSchema = z.object({
 	companyName: z.string().min(1, { message: 'Company name is required' }),
 	description: z.string().min(1, { message: 'Description is required' }),
 	website: z.string().url({ message: 'Please enter a valid URL' }),
-	logo: z.any().refine(files => files instanceof FileList && files.length > 0, { message: 'Logo is required' }),
+	// Make logo optional in the schema since we can't control it properly with react-hook-form
+	// We'll handle validation separately
 })
 
 // Define the type for our form values
@@ -45,12 +45,14 @@ type Sponsor = {
 	companyName: string
 	description: string
 	website: string
-	logo: string
+	logo?: string
 }
 
 export default function AddSponsorsPage() {
 	const [loading, setLoading] = useState(false)
 	const [sponsors, setSponsors] = useState<Sponsor[]>([])
+	const [logo, setLogo] = useState<File | null>(null)
+	const [logoError, setLogoError] = useState('')
 
 	// Initialize the form with shadcn/ui Form
 	const form = useForm<SponsorFormValues>({
@@ -69,8 +71,10 @@ export default function AddSponsorsPage() {
 				const response = await fetch('/api/admin/sponsors')
 				if (response.ok) {
 					const data = await response.json()
-					console.log(data)
-					setSponsors(data.sponsors)
+					// Ensure we're getting an array and each sponsor has the expected structure
+					const validSponsors = Array.isArray(data.sponsors) ? data.sponsors : []
+					console.log('Fetched sponsors:', validSponsors)
+					setSponsors(validSponsors)
 				}
 			} catch (error) {
 				console.error('Error fetching sponsors:', error)
@@ -81,8 +85,24 @@ export default function AddSponsorsPage() {
 		fetchSponsors()
 	}, [])
 
+	// File input change handler
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLogoError('')
+		if (e.target.files && e.target.files.length > 0) {
+			setLogo(e.target.files[0])
+		} else {
+			setLogo(null)
+		}
+	}
+
 	// Form submission handler
 	const onSubmit = async (data: SponsorFormValues) => {
+		// Check logo separately since it's not handled by react-hook-form
+		if (!logo) {
+			setLogoError('Logo is required')
+			return
+		}
+
 		try {
 			setLoading(true)
 
@@ -91,9 +111,7 @@ export default function AddSponsorsPage() {
 			formData.append('companyName', data.companyName)
 			formData.append('description', data.description)
 			formData.append('website', data.website)
-			if (data.logo && data.logo[0]) {
-				formData.append('logo', data.logo[0])
-			}
+			formData.append('logo', logo)
 
 			const response = await fetch('/api/admin/sponsors', {
 				method: 'POST',
@@ -101,16 +119,32 @@ export default function AddSponsorsPage() {
 			})
 
 			if (response.ok) {
-				const newSponsor = await response.json()
-				setSponsors(prev => [...prev, newSponsor.sponsor])
+				const result = await response.json()
+				// Safely add the new sponsor to the list
+				const newSponsor = result.sponsor || {}
+
+				// Ensure the new sponsor has all required properties
+				if (!newSponsor.id) newSponsor.id = `sponsor-${Date.now()}`
+				if (!newSponsor.companyName) newSponsor.companyName = data.companyName
+				if (!newSponsor.description) newSponsor.description = data.description
+				if (!newSponsor.website) newSponsor.website = data.website
+
+				setSponsors(prev => [...prev, newSponsor])
 				toast.success('Sponsor added successfully!')
+
+				// Reset form
 				form.reset()
+				setLogo(null)
+
+				// Reset file input by clearing its value
+				const fileInput = document.getElementById('logo-input') as HTMLInputElement
+				if (fileInput) fileInput.value = ''
 			} else {
 				const error = await response.json()
 				toast.error(error.message || 'Failed to add sponsor')
 			}
 		} catch (error) {
-			console.log('Error adding sponsor:', error)
+			console.error('Error adding sponsor:', error)
 			toast.error('An error occurred while adding the sponsor')
 		} finally {
 			setLoading(false)
@@ -199,19 +233,12 @@ export default function AddSponsorsPage() {
 										)}
 									/>
 
-									<FormField
-										control={form.control}
-										name="logo"
-										render={({ field: { onChange, ...rest } }) => (
-											<FormItem>
-												<FormLabel>Logo</FormLabel>
-												<FormControl>
-													<Input type="file" accept="image/*" onChange={e => onChange(e.target.files)} {...rest} />
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
+									{/* Handle file input separately since react-hook-form doesn't handle it well */}
+									<div className="space-y-2">
+										<FormLabel>Logo</FormLabel>
+										<Input id="logo-input" type="file" accept="image/*" onChange={handleFileChange} />
+										{logoError && <p className="text-sm font-medium text-red-500">{logoError}</p>}
+									</div>
 								</div>
 
 								<Button type="submit" disabled={loading}>
@@ -246,53 +273,60 @@ export default function AddSponsorsPage() {
 									</TableRow>
 								</TableHeader>
 								<TableBody>
-									{sponsors.map((sponsor, indx) => (
-										<TableRow key={indx}>
-											<TableCell>
-												<div className="h-12 w-12 rounded-md overflow-hidden bg-muted">
-													{sponsor.logo && (
-														<img
-															src={sponsor.logo || '/placeholder.svg'}
-															alt={`${sponsor.companyName} logo`}
-															className="h-full w-full object-contain"
-														/>
-													)}
-												</div>
-											</TableCell>
-											<TableCell className="font-medium">{sponsor.companyName}</TableCell>
-											<TableCell className="max-w-xs truncate">{sponsor.description}</TableCell>
-											<TableCell>
-												<a
-													href={sponsor.website}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="flex items-center text-primary hover:underline">
-													Visit <ExternalLink className="ml-1 h-3 w-3" />
-												</a>
-											</TableCell>
-											<TableCell className="text-right">
-												<AlertDialog>
-													<AlertDialogTrigger asChild>
-														<Button variant="destructive" size="icon">
-															<Trash2 className="h-4 w-4" />
-														</Button>
-													</AlertDialogTrigger>
-													<AlertDialogContent>
-														<AlertDialogHeader>
-															<AlertDialogTitle>Delete Sponsor</AlertDialogTitle>
-															<AlertDialogDescription>
-																Are you sure you want to delete {sponsor.companyName}? This action cannot be undone.
-															</AlertDialogDescription>
-														</AlertDialogHeader>
-														<AlertDialogFooter>
-															<AlertDialogCancel>Cancel</AlertDialogCancel>
-															<AlertDialogAction onClick={() => handleDelete(sponsor.id)}>Delete</AlertDialogAction>
-														</AlertDialogFooter>
-													</AlertDialogContent>
-												</AlertDialog>
-											</TableCell>
-										</TableRow>
-									))}
+									{sponsors.map((sponsor, indx) => {
+										// Ensure sponsor has all required properties with fallbacks
+										const safeCompanyName = sponsor?.companyName || 'Unknown Company'
+										const safeDescription = sponsor?.description || 'No description available'
+										const safeWebsite = sponsor?.website || '#'
+										const safeLogo = sponsor?.logo || ''
+										const safeId = sponsor?.id || `sponsor-${indx}`
+
+										return (
+											<TableRow key={indx}>
+												<TableCell>
+													<div className="h-12 w-12 rounded-md overflow-hidden bg-muted">
+														{safeLogo ? (
+															<img src={safeLogo} alt={`${safeCompanyName} logo`} className="h-full w-full object-contain" />
+														) : (
+															<div className="h-full w-full flex items-center justify-center text-xs text-gray-400">No Logo</div>
+														)}
+													</div>
+												</TableCell>
+												<TableCell className="font-medium">{safeCompanyName}</TableCell>
+												<TableCell className="max-w-xs truncate">{safeDescription}</TableCell>
+												<TableCell>
+													<a
+														href={safeWebsite}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="flex items-center text-primary hover:underline">
+														Visit <ExternalLink className="ml-1 h-3 w-3" />
+													</a>
+												</TableCell>
+												<TableCell className="text-right">
+													<AlertDialog>
+														<AlertDialogTrigger asChild>
+															<Button variant="destructive" size="icon">
+																<Trash2 className="h-4 w-4" />
+															</Button>
+														</AlertDialogTrigger>
+														<AlertDialogContent>
+															<AlertDialogHeader>
+																<AlertDialogTitle>Delete Sponsor</AlertDialogTitle>
+																<AlertDialogDescription>
+																	Are you sure you want to delete {safeCompanyName}? This action cannot be undone.
+																</AlertDialogDescription>
+															</AlertDialogHeader>
+															<AlertDialogFooter>
+																<AlertDialogCancel>Cancel</AlertDialogCancel>
+																<AlertDialogAction onClick={() => handleDelete(safeId)}>Delete</AlertDialogAction>
+															</AlertDialogFooter>
+														</AlertDialogContent>
+													</AlertDialog>
+												</TableCell>
+											</TableRow>
+										)
+									})}
 								</TableBody>
 							</Table>
 						)}

@@ -5,12 +5,12 @@ import { Tournament } from '@prisma/client'
 
 export default function FeaturedTournament({ tournament }: { tournament: Tournament }) {
 	return (
-		<Card className="overflow-hidden py-0 border-2 border-purple-800">
+		<Card className="overflow-hidden py-0 border-2 border-primary">
 			<div className="relative">
 				<Image src={tournament.image} alt="Tournament Banner" width={600} height={300} className="w-full object-cover h-48" />
 				<div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/60"></div>
 				<div className="absolute bottom-0 left-0 p-4">
-					<span className="px-2 py-1 text-xs font-medium bg-purple-700 text-white rounded-md">{tournament.name}</span>
+					<span className="px-2 py-1 text-xs font-medium bg-primary text-white rounded-md">{tournament.name}</span>
 				</div>
 			</div>
 			<CardContent className="p-6">
