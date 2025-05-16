@@ -53,12 +53,6 @@ export default async function Home() {
 										Join Tournaments
 									</Button>
 								</Link>
-								<Link href="/merchandise">
-									<Button size="lg" variant="outline" className="text-white">
-										<ShoppingBag className="mr-2 h-4 w-4" />
-										Shop Merch
-									</Button>
-								</Link>
 							</div>
 							<SocialLinks />
 						</div>

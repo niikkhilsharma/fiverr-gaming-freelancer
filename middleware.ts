@@ -48,5 +48,8 @@ export default auth(async function middleware(request) {
 })
 
 export const config = {
-	matcher: ['/((?!api/auth|auth|images|_next/static|auth/*|_next/image|favicon.ico|api/cloudinary/image-upload|^/$).+)', '/'],
+	matcher: [
+		'/((?!api/auth|auth|images|_next/static|auth/*|assets/*|_next/image|favicon.ico|api/cloudinary/image-upload|^/$).+)',
+		'/',
+	],
 }
