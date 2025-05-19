@@ -153,8 +153,9 @@ export default function LeaderboardManagement({
 	// Delete leaderboard entry handler
 	const handleDelete = async (id: string) => {
 		try {
-			const response = await fetch(`/api/admin/leaderboard?id=${id}`, {
+			const response = await fetch(`/api/admin/leaderboard`, {
 				method: 'DELETE',
+				body: JSON.stringify({ id }),
 			})
 
 			if (response.ok) {

@@ -7,7 +7,6 @@ interface LeaderboardEntry {
 	id: string
 	teamId: string
 	tournamentId: string
-	teamName: string
 	points: number
 }
 
@@ -18,7 +17,7 @@ type TournamentGroups = {
 
 export default async function LeaderboardPage() {
 	// Fetch leaderboard entries from database
-	const leaderboardEntries: LeaderboardEntry[] = await prisma.leaderboard.findMany({
+	const leaderboardEntries = await prisma.leaderboard.findMany({
 		orderBy: {
 			points: 'desc',
 		},
@@ -75,9 +74,8 @@ export default async function LeaderboardPage() {
 														<div className="flex items-center gap-2">
 															<Avatar className="h-8 w-8">
 																<AvatarImage src={entry.teamId || ''} alt="Profile picture" />
-																<AvatarFallback>{entry.teamName.substring(0, 2).toUpperCase()}</AvatarFallback>
+																<AvatarFallback>AB</AvatarFallback>
 															</Avatar>
-															<span className="hidden sm:inline">{entry.teamName}</span>
 														</div>
 													</td>
 													<td className="p-3 text-sm text-center hidden md:table-cell">{entry.teamId}</td>

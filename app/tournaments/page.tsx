@@ -6,22 +6,29 @@ export default async function TournamentsPage() {
 	const session = await auth()
 	const user = session?.user
 
+	if (!user) {
+		return <p className="text-center mt-20">You need to be logged in to view tournaments.</p>
+	}
+
+	// Fetch all tournaments
 	const allTournaments = await prisma.tournament.findMany()
 
+	// Fetch teams where the current user is a player
 	const myTeams = await prisma.team.findMany({
-		where: { captainEmail: user?.email },
+		where: { TeamPlayer: { hasSome: [user.id || ''] } },
 	})
 
+	// Fetch registrations of those teams
 	const myAllRegistrations = await prisma.registration.findMany({
 		where: {
 			teamId: { in: myTeams.map(team => team.id) },
 		},
 	})
 
-	const myTournaments = await prisma.tournament.findMany({
-		where: {
-			id: { in: myAllRegistrations.map(registration => registration.tournamentId) },
-		},
+	// Create a map of tournamentId => teamId
+	const tournamentToTeamMap = new Map<string, string>()
+	myAllRegistrations.forEach(reg => {
+		tournamentToTeamMap.set(reg.tournamentId, reg.teamId)
 	})
 
 	return (
@@ -36,13 +43,15 @@ export default async function TournamentsPage() {
 			</div>
 
 			<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{allTournaments.map(tournament => (
-					<TournamentCard
-						key={tournament.id}
-						tournament={tournament}
-						alreadyRegistered={myTournaments.some(myTournament => myTournament.id === tournament.id)}
-					/>
-				))}
+				{allTournaments.map(tournament => {
+					const teamId = tournamentToTeamMap.get(tournament.id)
+					const myTeam = myTeams.find(team => team.id === teamId)
+					const alreadyRegistered = !!myTeam
+
+					return (
+						<TournamentCard key={tournament.id} tournament={tournament} alreadyRegistered={alreadyRegistered} myTeam={myTeam} />
+					)
+				})}
 			</div>
 		</div>
 	)

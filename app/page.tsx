@@ -33,9 +33,9 @@ export default async function Home() {
 	const sponsors = await prisma.sponsors.findMany()
 
 	return (
-		<div className="flex flex-col min-h-screen">
+		<div className="flex flex-col min-h-screen bg-background">
 			{/* Hero Section */}
-			<section className="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-orange-950 via-orange-900 to-rose-950 text-white">
+			<section className="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-[#a50000] to-[#edab3b] text-white">
 				<div className="container px-4 md:px-6 mx-auto">
 					<div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_500px]">
 						<div className="flex flex-col justify-center space-y-4">
@@ -48,7 +48,7 @@ export default async function Home() {
 							</div>
 							<div className="flex flex-col gap-2 min-[400px]:flex-row">
 								<Link href="/tournaments">
-									<Button size="lg">
+									<Button size="lg" className="bg-[#e59e3b] hover:bg-[#e59e3b]/90 text-black">
 										<Trophy className="mr-2 h-4 w-4" />
 										Join Tournaments
 									</Button>
@@ -69,7 +69,7 @@ export default async function Home() {
 			</section>
 
 			{/* Featured Tournament */}
-			<section className="w-full py-12 md:py-16 lg:py-20 bg-gray-900">
+			<section className="w-full py-12 md:py-16 lg:py-20">
 				<div className="container px-4 md:px-6 mx-auto">
 					<div className="flex flex-col items-center justify-center space-y-4 text-center">
 						<div className="space-y-2">
@@ -79,30 +79,34 @@ export default async function Home() {
 							</p>
 						</div>
 					</div>
-					<div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-						<FeaturedTournament tournament={upcomingTournaments[0]} />
-						<div className="flex flex-col justify-center space-y-4">
-							<ul className="grid gap-3">
-								<li className="flex items-center gap-2">
-									<Trophy className="h-5 w-5 text-primary" />
-									<span>${upcomingTournaments[0].prizePool.toLocaleString()} Prize Pool</span>
-								</li>
-								<li className="flex items-center gap-2">
-									<Users className="h-5 w-5 text-primary" />
-									<span>32 Team Bracket</span>
-								</li>
-								<li className="flex items-center gap-2">
-									<MessageSquare className="h-5 w-5 text-primary" />
-									<span>Live on Discord</span>
-								</li>
-							</ul>
-							<Link href={`/tournaments/signup?id=${upcomingTournaments[0].id}`}>
-								<Button size="lg" className="w-full md:w-auto">
-									Register Now
-								</Button>
-							</Link>
+					{upcomingTournaments.length > 0 ? (
+						<div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+							<FeaturedTournament tournament={upcomingTournaments[0]} />
+							<div className="flex flex-col justify-center space-y-4">
+								<ul className="grid gap-3">
+									<li className="flex items-center gap-2">
+										<Trophy className="h-5 w-5 text-primary" />
+										<span>${upcomingTournaments[0].prizePool.toLocaleString()} Prize Pool</span>
+									</li>
+									<li className="flex items-center gap-2">
+										<Users className="h-5 w-5 text-primary" />
+										<span>32 Team Bracket</span>
+									</li>
+									<li className="flex items-center gap-2">
+										<MessageSquare className="h-5 w-5 text-primary" />
+										<span>Live on Discord</span>
+									</li>
+								</ul>
+								<Link href={`/tournaments/signup?id=${upcomingTournaments[0].id}`}>
+									<Button size="lg" className="w-full md:w-auto">
+										Register Now
+									</Button>
+								</Link>
+							</div>
 						</div>
-					</div>
+					) : (
+						<div className="text-xl sm:text-3xl font-bold text-center mt-10">No upcoming tournaments</div>
+					)}
 				</div>
 			</section>
 
@@ -130,7 +134,7 @@ export default async function Home() {
 			</section>
 
 			{/* Sponsors */}
-			<section className="w-full py-12 md:py-16 lg:py-20 bg-gray-900">
+			<section className="w-full py-12 md:py-16 lg:py-20">
 				<div className="container px-4 md:px-6 mx-auto">
 					<div className="flex flex-col items-center justify-center space-y-4 text-center">
 						<div className="space-y-2">

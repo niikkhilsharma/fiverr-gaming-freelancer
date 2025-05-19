@@ -1,17 +1,36 @@
-import { Tournament } from '@prisma/client'
+'use client'
+
+import { Team, Tournament } from '@prisma/client'
 import Link from 'next/link'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { CalendarDays, Clock, Trophy, Users } from 'lucide-react'
+import { CalendarDays, Clock, Trophy, Check, Copy } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 
 export default function TournamentCard({
 	tournament,
 	alreadyRegistered,
+	myTeam,
+	isAdmin,
 }: {
 	tournament: Tournament
 	alreadyRegistered?: boolean
+	myTeam?: Team
+	isAdmin?: boolean
 }) {
+	const [copied, setCopied] = useState(false)
+
+	const handleCopyCode = async () => {
+		try {
+			await navigator.clipboard.writeText(myTeam?.id || '')
+			setCopied(true)
+			setTimeout(() => setCopied(false), 2000)
+		} catch (err) {
+			console.error('Failed to copy:', err)
+		}
+	}
+
 	return (
 		<Card key={tournament.id} className={tournament.endDateTime < new Date() ? 'opacity-70' : ''}>
 			<div className="relative">
@@ -45,27 +64,46 @@ export default function TournamentCard({
 						<Trophy className="mr-2 h-4 w-4 text-purple-600" />
 						<span>Prize: ${tournament.prizePool}</span>
 					</div>
-					<div className="flex items-center">
-						<Users className="mr-2 h-4 w-4 text-purple-600" />
-						<span>Teams: {tournament.registeredTeamsCount}</span>
-					</div>
 				</div>
 			</CardContent>
-			<CardFooter>
-				{alreadyRegistered ? (
-					<Button disabled className="w-full">
-						Already Registered
-					</Button>
-				) : !(tournament.endDateTime < new Date()) ? (
-					<Link href={`/tournaments/signup?id=${tournament.id}`} className="w-full">
-						<Button className="w-full bg-purple-700 hover:bg-purple-800"> Register Now</Button>
+			{!isAdmin ? (
+				<CardFooter>
+					{alreadyRegistered ? (
+						<div className="flex flex-col gap-2 w-full">
+							<Button disabled className="w-full">
+								Already Registered
+							</Button>
+							<Button className="w-full" variant="outline" onClick={handleCopyCode}>
+								{copied ? (
+									<>
+										<Check className="mr-2 h-4 w-4" />
+										Code Copied!
+									</>
+								) : (
+									<>
+										<Copy className="mr-2 h-4 w-4" />
+										Share Tournament Code
+									</>
+								)}
+							</Button>
+						</div>
+					) : !(tournament.endDateTime < new Date()) ? (
+						<Link href={`/tournaments/signup?id=${tournament.id}`} className="w-full">
+							<Button className="w-full bg-purple-700 hover:bg-purple-800"> Register Now</Button>
+						</Link>
+					) : (
+						<Button disabled className="w-full">
+							Registration Closed
+						</Button>
+					)}
+				</CardFooter>
+			) : (
+				<CardFooter>
+					<Link href={`/admin/tournament/${tournament.id}/teams`} className="w-full">
+						<Button className="w-full bg-purple-700 hover:bg-purple-800"> View Teams</Button>
 					</Link>
-				) : (
-					<Button disabled className="w-full">
-						Registration Closed
-					</Button>
-				)}
-			</CardFooter>
+				</CardFooter>
+			)}
 		</Card>
 	)
 }

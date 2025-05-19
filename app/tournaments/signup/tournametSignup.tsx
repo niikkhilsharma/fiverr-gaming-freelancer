@@ -18,9 +18,10 @@ export default function TournamentSignupPage() {
 
 	const [formData, setFormData] = useState({
 		teamName: '',
-		discord: '',
 		agreeToRules: false,
 	})
+
+	const [teamCode, setTeamCode] = useState('')
 
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [isSubmitted, setIsSubmitted] = useState(false)
@@ -50,6 +51,26 @@ export default function TournamentSignupPage() {
 			}, 1500)
 		} else if (response.data.error) {
 			toast('Registration failed', {
+				description: 'Something went wrong. Please try again.',
+			})
+		}
+
+		setIsSubmitting(false)
+	}
+
+	async function joinTeam() {
+		const response = await axios.post('/api/tournament/join', { tournamentId: tournamentId!, teamCode: teamCode })
+
+		if (response.data.success) {
+			toast('Joining team successful', {
+				description: 'You have successfully joined the team.',
+			})
+
+			setTimeout(() => {
+				setIsSubmitted(true)
+			}, 1500)
+		} else if (response.data.error) {
+			toast('Joining team failed', {
 				description: 'Something went wrong. Please try again.',
 			})
 		}
@@ -120,17 +141,6 @@ export default function TournamentSignupPage() {
 								/>
 							</div>
 
-							<div className="space-y-2">
-								<Label htmlFor="discord">Discord Username</Label>
-								<Input
-									id="discord"
-									name="discord"
-									placeholder="Enter your Discord username"
-									value={formData.discord}
-									onChange={handleChange}
-								/>
-							</div>
-
 							<div className="flex items-center space-x-2 mb-2">
 								<Checkbox id="agreeToRules" checked={formData.agreeToRules} onCheckedChange={handleCheckboxChange} required />
 								<Label htmlFor="agreeToRules" className="text-sm">
@@ -141,6 +151,45 @@ export default function TournamentSignupPage() {
 						<CardFooter>
 							<Button type="submit" className="w-full bg-purple-700 hover:bg-purple-800" disabled={isSubmitting}>
 								{isSubmitting ? 'Submitting...' : 'Register Team'}
+							</Button>
+						</CardFooter>
+					</form>
+				</Card>
+			</div>
+
+			<div className="flex flex-col items-center justify-center space-y-4 text-center mb-8 mt-10">
+				<div className="space-y-2">
+					<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl">Join Team</h1>
+				</div>
+			</div>
+
+			<div className="mx-auto max-w-2xl">
+				<Card>
+					<CardHeader>
+						<CardTitle>Join Team</CardTitle>
+						<CardDescription>Please provide all required information to complete your registration.</CardDescription>
+					</CardHeader>
+					<form
+						onSubmit={e => {
+							e.preventDefault()
+							joinTeam()
+						}}>
+						<CardContent className="space-y-4">
+							<div className="space-y-2">
+								<Label htmlFor="teamCode">Team Code</Label>
+								<Input
+									id="teamCode"
+									name="teamCode"
+									placeholder="Enter your team Code"
+									value={teamCode}
+									onChange={e => setTeamCode(e.target.value)}
+									required
+								/>
+							</div>
+						</CardContent>
+						<CardFooter className="mt-4">
+							<Button type="submit" className="w-full bg-purple-700 hover:bg-purple-800" disabled={isSubmitting}>
+								{isSubmitting ? 'Submitting...' : 'Join Team'}
 							</Button>
 						</CardFooter>
 					</form>

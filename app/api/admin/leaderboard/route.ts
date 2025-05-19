@@ -2,32 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import prisma from '@/lib/prisma/prisma'
 
-// This would be your database client in a real application
-// For this example, we'll use a simple in-memory store
-const leaderboardEntries = [
-	{
-		id: 'clq1234567',
-		teamId: 'team1',
-		tournamentId: 'tournament1',
-		teamName: 'Alpha Team',
-		points: 120,
-	},
-	{
-		id: 'clq2345678',
-		teamId: 'team2',
-		tournamentId: 'tournament1',
-		teamName: 'Beta Squad',
-		points: 95,
-	},
-	{
-		id: 'clq3456789',
-		teamId: 'team3',
-		tournamentId: 'tournament2',
-		teamName: 'Gamma Force',
-		points: 150,
-	},
-]
-
 // Validation schema for POST/PUT requests
 const leaderboardSchema = z.object({
 	teamId: z.string().min(1),
@@ -45,7 +19,6 @@ const updateLeaderboardSchema = leaderboardSchema.extend({
 export async function GET() {
 	try {
 		const leaderboardEntries = await prisma.leaderboard.findMany()
-		console.log(leaderboardEntries)
 		return NextResponse.json({ leaderboard: leaderboardEntries })
 	} catch (error) {
 		console.log(error)
@@ -57,18 +30,21 @@ export async function GET() {
 export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json()
-
 		// Validate request body
 		const validatedData = leaderboardSchema.parse(body)
+		console.log(validatedData)
 
 		const newEntry = await prisma.leaderboard.create({
 			data: {
-				...validatedData,
+				teamId: validatedData.teamId,
+				tournamentId: validatedData.tournamentId,
+				points: validatedData.points,
 			},
 		})
 
 		return NextResponse.json({ leaderboard: newEntry }, { status: 201 })
 	} catch (error) {
+		console.log(error)
 		if (error instanceof z.ZodError) {
 			return NextResponse.json({ message: 'Validation error', errors: error.errors }, { status: 400 })
 		}
@@ -99,7 +75,6 @@ export async function PUT(request: NextRequest) {
 			data: {
 				teamId: validatedData.teamId,
 				tournamentId: validatedData.tournamentId,
-				teamName: validatedData.teamName,
 				points: validatedData.points,
 			},
 		})
@@ -117,12 +92,15 @@ export async function PUT(request: NextRequest) {
 // DELETE handler - Delete a leaderboard entry
 export async function DELETE(request: NextRequest) {
 	try {
-		const { searchParams } = new URL(request.url)
-		const id = searchParams.get('id')
+		const body = await request.json()
+		console.log(body)
+		const id = body.id
 
 		if (!id) {
 			return NextResponse.json({ message: 'ID is required' }, { status: 400 })
 		}
+
+		const leaderboardEntries = await prisma.leaderboard.findMany()
 
 		// Find the entry to delete
 		const entryIndex = leaderboardEntries.findIndex(entry => entry.id === id)
@@ -132,9 +110,12 @@ export async function DELETE(request: NextRequest) {
 		}
 
 		// Remove the entry
-		leaderboardEntries.splice(entryIndex, 1)
-
-		return NextResponse.json({ message: 'Leaderboard entry deleted successfully' })
+		const updatedLeaderboardEntry = prisma.leaderboard.deleteMany({
+			where: {
+				id: id,
+			},
+		})
+		return NextResponse.json({ message: 'Leaderboard entry deleted successfully', updatedLeaderboardEntry })
 	} catch (error) {
 		console.log(error)
 		return NextResponse.json({ message: 'Failed to delete leaderboard entry' }, { status: 500 })

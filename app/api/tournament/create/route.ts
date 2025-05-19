@@ -14,14 +14,10 @@ export async function POST(request: Request) {
 		return NextResponse.json({ error: 'Tournament not found' }, { status: 404 })
 	}
 
-	const team = await prisma.team.create({ data: { teamName, captainEmail: user?.email as string, tournamentId } })
+	const team = await prisma.team.create({ data: { teamName, TeamPlayer: [user?.id as string], tournamentId } })
 	const registration = await prisma.registration.create({ data: { teamId: team.id, tournamentId } })
-	const updatedTournament = await prisma.tournament.update({
-		where: { id: tournamentId },
-		data: { registeredTeamsCount: tournament.registeredTeamsCount + 1 },
-	})
 
-	console.log(team, registration, updatedTournament)
+	console.log(team, registration)
 
 	return NextResponse.json({ success: true })
 }

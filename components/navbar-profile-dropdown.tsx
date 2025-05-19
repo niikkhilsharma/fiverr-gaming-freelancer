@@ -25,7 +25,7 @@ export default function NavbarProfileDropdown({
 						{!isAuthenticated ? (
 							<UserRound />
 						) : (
-							<Avatar className="h-9 w-9 aspect-square">
+							<Avatar className="w-9 aspect-square mb-0 overflow-hidden">
 								<AvatarImage src={avatar} />
 								<AvatarFallback>CN</AvatarFallback>
 							</Avatar>

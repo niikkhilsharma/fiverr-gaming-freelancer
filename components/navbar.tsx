@@ -21,9 +21,10 @@ export default function Navbar({ isAuth, avatar, isAdmin }: { isAuth: boolean; a
 	]
 
 	const adminNavigation = [
-		{ name: 'Create Tournament', href: '/admin/create-tournaments' },
+		{ name: 'Create Tournament', href: '/admin/create-tournament' },
 		{ name: 'Add Leaderboard', href: '/admin/leaderboard' },
 		{ name: 'Add Sponsors', href: '/admin/sponsors' },
+		{ name: 'Dashboard', href: '/admin/dashboard' },
 	]
 
 	const navigation = isAdmin ? adminNavigation : userNavigation

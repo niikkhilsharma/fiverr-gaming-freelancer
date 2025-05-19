@@ -94,7 +94,6 @@ export async function POST(req: NextRequest) {
 				startDateTime: startDateTime, // Using DateTime objects for both date and time fields
 				endDateTime: endDateTime, // Using DateTime objects for both date and time fields
 				prizePool: validatedData.prizePool, // Already transformed to cents
-				registeredTeamsCount: 0,
 				maxTeamCount: validatedData.maxPlayers,
 				image: imageUrl!,
 				streamingUrl: validatedData.streamingUrl || null,

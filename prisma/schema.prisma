@@ -29,6 +29,7 @@ model User {
   discordUsername String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  Team            Team[]
 }
 
 model Sponsors {
@@ -48,48 +49,51 @@ model BecomeSponsor {
 }
 
 model Tournament {
-  id                   String   @id @default(cuid())
-  name                 String
-  description          String
-  image                String
-  startDateTime        DateTime
-  endDateTime          DateTime
-  registeredTeamsCount Int
-  isRegistrationOpen   Boolean  @default(true)
-  prizePool            Int
-  streamingUrl         String?
-  maxTeamCount         Int?
-  maxTeamPlayers       Int?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  id                 String         @id @default(cuid())
+  name               String
+  description        String
+  image              String
+  startDateTime      DateTime
+  endDateTime        DateTime
+  isRegistrationOpen Boolean        @default(true)
+  prizePool          Int
+  streamingUrl       String?
+  maxTeamCount       Int?
+  maxTeamPlayers     Int?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  Registration       Registration[]
+  Team               Team[]
+  Leaderboard        Leaderboard[]
 }
 
 model Registration {
-  id           String @id @default(cuid())
+  id           String     @id @default(cuid())
   tournamentId String
-  teamId       String
-}
-
-model TeamPlayer {
-  id    String @id @default(cuid())
-  name  String
-  email String
+  teamId       String     @unique
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  team         Team       @relation(fields: [teamId], references: [id])
 }
 
 model Team {
-  id           String   @id @default(cuid())
+  id           String         @id @default(cuid())
   teamName     String
-  captainEmail String
-  players      Json[] //array of users emails
-  tournamentId String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  tournamentId String         @unique
+  tournament   Tournament     @relation(fields: [tournamentId], references: [id])
+  TeamPlayer   String[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Registration Registration[]
+  Leaderboard  Leaderboard[]
+  User         User?          @relation(fields: [userId], references: [id])
+  userId       String?
 }
 
 model Leaderboard {
-  id           String @id @default(cuid())
-  teamId       String
+  id           String     @id @default(cuid())
+  teamId       String     @unique
   tournamentId String
-  teamName     String
   points       Int
+  team         Team       @relation(fields: [teamId], references: [id])
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
 }

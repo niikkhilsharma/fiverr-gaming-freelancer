@@ -1,5 +1,6 @@
 'use client'
 import { useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import Cropper, { Area, Point } from 'react-easy-crop'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -90,6 +91,7 @@ export default function CreateTournamentPage() {
 	const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
 	const [zoom, setZoom] = useState<number>(1)
 	const [originalFile, setOriginalFile] = useState<File | null>(null)
+	const router = useRouter()
 
 	const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixelsData: Area) => {
 		setCroppedAreaPixels(croppedAreaPixelsData)
@@ -161,6 +163,7 @@ export default function CreateTournamentPage() {
 			const request = await axios.post('/api/admin/create-tournament', formData)
 			const data = request.data
 			console.log(data)
+			router.push('/tournaments')
 		} catch (error) {
 			console.error('Error setting up the request:', error)
 		}
@@ -418,7 +421,7 @@ export default function CreateTournamentPage() {
 																htmlFor="image-upload"
 																className="cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
 																<span>Upload an image</span>
-																<input
+																<Input
 																	id="image-upload"
 																	type="file"
 																	accept="image/*"

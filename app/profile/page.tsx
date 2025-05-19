@@ -8,7 +8,7 @@ export default async function ProfilePage() {
 	const user = session?.user
 
 	const myTeams = await prisma.team.findMany({
-		where: { captainEmail: user?.email },
+		where: { TeamPlayer: { hasSome: [user?.id || ''] } },
 	})
 
 	const myAllRegistrations = await prisma.registration.findMany({
