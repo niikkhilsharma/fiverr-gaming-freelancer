@@ -26,6 +26,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Separator } from '@/components/ui/separator'
 import { ExternalLink, Trash2 } from 'lucide-react'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import Image from 'next/image'
 
 // Define the form schema with zod
 const sponsorFormSchema = z.object({
@@ -256,12 +257,11 @@ export default function AddSponsorsPage() {
 						<CardDescription>Manage your existing sponsors</CardDescription>
 					</CardHeader>
 					<CardContent>
-						{sponsors.length === 0 ? (
+						{sponsors.length === 0 ?
 							<div className="text-center py-6">
 								<p className="text-muted-foreground">No sponsors added yet.</p>
 							</div>
-						) : (
-							<Table>
+						:	<Table>
 								<TableCaption>A list of all sponsors for your platform</TableCaption>
 								<TableHeader>
 									<TableRow>
@@ -285,11 +285,15 @@ export default function AddSponsorsPage() {
 											<TableRow key={indx}>
 												<TableCell>
 													<div className="h-12 w-12 rounded-md overflow-hidden bg-muted">
-														{safeLogo ? (
-															<img src={safeLogo} alt={`${safeCompanyName} logo`} className="h-full w-full object-contain" />
-														) : (
-															<div className="h-full w-full flex items-center justify-center text-xs text-gray-400">No Logo</div>
-														)}
+														{safeLogo ?
+															<Image
+																width={120}
+																height={120}
+																src={safeLogo}
+																alt={`${safeCompanyName} logo`}
+																className="h-full w-full object-contain"
+															/>
+														:	<div className="h-full w-full flex items-center justify-center text-xs text-gray-400">No Logo</div>}
 													</div>
 												</TableCell>
 												<TableCell className="font-medium">{safeCompanyName}</TableCell>
@@ -329,7 +333,7 @@ export default function AddSponsorsPage() {
 									})}
 								</TableBody>
 							</Table>
-						)}
+						}
 					</CardContent>
 				</Card>
 			</div>

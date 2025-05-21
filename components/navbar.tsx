@@ -15,7 +15,7 @@ export default function Navbar({ isAuth, avatar, isAdmin }: { isAuth: boolean; a
 	const userNavigation = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Tournaments', href: '/tournaments' },
-		{ name: 'leaderboard', href: '/leaderboard' },
+		{ name: 'Leaderboard', href: '/leaderboard' },
 		{ name: 'Sponsors', href: '/sponsors' },
 		{ name: 'Rules', href: '/rules' },
 	]

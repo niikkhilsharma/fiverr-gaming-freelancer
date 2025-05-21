@@ -12,6 +12,9 @@ export default auth(async function middleware(request) {
 		'/signup',
 		'/api/razorpay/webhook',
 		'/forgot-password',
+		'/api/forget-password',
+		'/api/reset-password',
+		'/reset-password',
 		'/about-us',
 		'/contact',
 		'/toc',
@@ -25,6 +28,7 @@ export default auth(async function middleware(request) {
 	headers.set('x-current-origin', request.nextUrl.origin)
 
 	// Check if the request path is in the allowed list
+	console.log(request.nextUrl.pathname, allowedPaths.includes(request.nextUrl.pathname))
 	if (allowedPaths.includes(request.nextUrl.pathname)) {
 		return NextResponse.next({ headers })
 	}

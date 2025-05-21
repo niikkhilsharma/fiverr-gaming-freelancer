@@ -98,7 +98,7 @@ export default async function Home() {
 									</li>
 								</ul>
 								<Link href={`/tournaments/signup?id=${upcomingTournaments[0].id}`}>
-									<Button size="lg" className="w-full md:w-auto">
+									<Button size="lg" className="w-full md:w-auto bg-blue-800/20">
 										Register Now
 									</Button>
 								</Link>
