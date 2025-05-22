@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 
 	try {
 		const { data, error } = await resend.emails.send({
-			from: 'test@techsolutions.services.com',
+			from: 'delivered@resend.dev',
 			to: email,
 			subject: 'Reset Your Password',
 			react: await EmailTemplate({ firstName: user.firstName || 'there', link: resetLink }),

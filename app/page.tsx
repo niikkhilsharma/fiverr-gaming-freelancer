@@ -57,7 +57,7 @@ export default async function Home() {
 							<SocialLinks />
 						</div>
 						<Image
-							src="https://picsum.photos/200/300"
+							src={'/assets/images/logo/logo.png'}
 							width={500}
 							height={400}
 							alt="Gaming Community"
@@ -79,7 +79,7 @@ export default async function Home() {
 							</p>
 						</div>
 					</div>
-					{upcomingTournaments.length > 0 ? (
+					{upcomingTournaments.length > 0 ?
 						<div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
 							<FeaturedTournament tournament={upcomingTournaments[0]} />
 							<div className="flex flex-col justify-center space-y-4">
@@ -104,9 +104,7 @@ export default async function Home() {
 								</Link>
 							</div>
 						</div>
-					) : (
-						<div className="text-xl sm:text-3xl font-bold text-center mt-10">No upcoming tournaments</div>
-					)}
+					:	<div className="text-xl sm:text-3xl font-bold text-center mt-10">No upcoming tournaments</div>}
 				</div>
 			</section>
 

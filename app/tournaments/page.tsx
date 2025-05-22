@@ -6,16 +6,12 @@ export default async function TournamentsPage() {
 	const session = await auth()
 	const user = session?.user
 
-	if (!user) {
-		return <p className="text-center mt-20">You need to be logged in to view tournaments.</p>
-	}
-
 	// Fetch all tournaments
 	const allTournaments = await prisma.tournament.findMany()
 
 	// Fetch teams where the current user is a player
 	const myTeams = await prisma.team.findMany({
-		where: { TeamPlayer: { hasSome: [user.id || ''] } },
+		where: { TeamPlayer: { hasSome: [user?.id || ''] } },
 	})
 
 	// Fetch registrations of those teams

@@ -14,6 +14,8 @@ export default auth(async function middleware(request) {
 		'/forgot-password',
 		'/api/forget-password',
 		'/api/reset-password',
+		'/tournaments',
+		'/leaderboard',
 		'/reset-password',
 		'/about-us',
 		'/contact',
