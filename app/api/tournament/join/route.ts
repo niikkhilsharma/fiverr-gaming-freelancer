@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 		return NextResponse.json({ error: 'Registration is closed' }, { status: 400 })
 	}
 
-	const team = await prisma.team.findUnique({ where: { tournamentId: tournamentId } })
+	const team = await prisma.team.findFirst({ where: { tournamentId: tournamentId } })
 
 	if (!team) {
 		return NextResponse.json({ error: 'Team not found' }, { status: 404 })

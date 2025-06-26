@@ -83,10 +83,10 @@ export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] 
 				</TabsList>
 
 				<TabsContent value="sponsors">
-					<div className="space-y-12 grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+					<div className="space-y-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-fit">
 						{allSponsors.map(company => (
-							<Card key={company.id} className="overflow-hidden max-h-96 h-full">
-								<div className="p-6 flex justify-center items-center bg-gray-800 border-b border-gray-700">
+							<Card key={company.id} className="overflow-hidden max-w-96 max-h-96 h-full">
+								<div className="p-4 flex justify-center items-center bg-gray-800 border-b border-gray-700">
 									<Image
 										src={company.logo || 'https://picsum.photos/200/300'}
 										alt={company.companyName}
@@ -95,15 +95,15 @@ export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] 
 										className="object-cover h-32"
 									/>
 								</div>
-								<CardContent className="p-6">
+								<CardContent className="p-4 mb-2">
 									<h3 className="font-bold text-lg mb-2">{company.companyName}</h3>
-									<p className="text-sm text-gray-400 mb-4">{company.description}</p>
+									<p className="text-sm text-gray-400 mb-4 text-ellipsis line-clamp-3">{company.description}</p>
 									{company.website && (
 										<Link
 											href={company.website}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="inline-flex items-center text-sm text-purple-600 hover:text-purple-800">
+											className="inline-flex items-center text-sm text-[#e4a338] hover:text-[#e4a338]/90">
 											<ExternalLink className="h-4 w-4 mr-1" />
 											Visit Website
 										</Link>
@@ -174,7 +174,7 @@ export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] 
 									</div>
 								</CardContent>
 								<CardFooter className="mt-4">
-									<Button type="submit" className="w-full bg-purple-700 hover:bg-purple-800" disabled={isSubmitting}>
+									<Button type="submit" className="w-full bg-[#e4a338] hover:bg-[#e4a338]/90" disabled={isSubmitting}>
 										{isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
 									</Button>
 								</CardFooter>
@@ -190,21 +190,21 @@ export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] 
 								</p>
 								<ul className="space-y-2 mt-4">
 									<li className="flex items-start">
-										<Users className="h-5 w-5 text-purple-600 mr-2 mt-0.5" />
+										<Users className="h-5 w-5 text-[#e4a338] mr-2 mt-0.5" />
 										<div>
 											<span className="font-medium">Growing Community</span>
 											<p className="text-sm text-gray-400">Access to our rapidly expanding community of over 10,000 active gamers.</p>
 										</div>
 									</li>
 									<li className="flex items-start">
-										<Building className="h-5 w-5 text-purple-600 mr-2 mt-0.5" />
+										<Building className="h-5 w-5 text-[#e4a338] mr-2 mt-0.5" />
 										<div>
 											<span className="font-medium">Brand Exposure</span>
 											<p className="text-sm text-gray-400">Showcase your brand to a targeted audience of gaming enthusiasts.</p>
 										</div>
 									</li>
 									<li className="flex items-start">
-										<Mail className="h-5 w-5 text-purple-600 mr-2 mt-0.5" />
+										<Mail className="h-5 w-5 text-[#e4a338] mr-2 mt-0.5" />
 										<div>
 											<span className="font-medium">Direct Engagement</span>
 											<p className="text-sm text-gray-400">Opportunities for direct product feedback and community engagement.</p>
@@ -213,7 +213,7 @@ export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] 
 								</ul>
 							</div>
 
-							<div className="p-6 bg-purple-900 rounded-lg">
+							<div className="p-6 text-[#e4a338] rounded-lg">
 								<h3 className="text-lg font-medium mb-2">Contact Information</h3>
 								<p className="text-sm text-gray-400 mb-4">
 									If you prefer to reach out directly, you can contact our sponsorship team:

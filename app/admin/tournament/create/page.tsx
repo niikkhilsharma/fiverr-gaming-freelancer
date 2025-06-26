@@ -28,6 +28,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils'
 import { Card, CardContent } from '@/components/ui/card'
 import { Slider } from '@/components/ui/slider'
+import { toast } from 'sonner'
 
 // Define form schema
 // Function to get cropped image canvas
@@ -107,7 +108,7 @@ export default function CreateTournamentPage() {
 			prizePool: '',
 			maxPlayers: '',
 			streamingUrl: '',
-			image: null,
+			image: '',
 		},
 	})
 
@@ -165,7 +166,9 @@ export default function CreateTournamentPage() {
 			console.log(data)
 			router.push('/tournaments')
 		} catch (error) {
-			console.error('Error setting up the request:', error)
+			const axiosError = error as { response: { data: { error: string } } }
+			console.log(axiosError.response?.data.error)
+			toast.error(axiosError.response?.data.error || 'An error occurred while creating the tournament')
 		}
 		setLoading(false)
 	}
@@ -373,7 +376,7 @@ export default function CreateTournamentPage() {
 									<FormControl>
 										<Card className="border-dashed relative">
 											<CardContent className="flex flex-col items-center justify-center p-6">
-												{imagePreview ? (
+												{imagePreview ?
 													<div className="relative w-full">
 														<div className="h-64 relative">
 															<Cropper
@@ -413,8 +416,7 @@ export default function CreateTournamentPage() {
 															Remove Image
 														</Button>
 													</div>
-												) : (
-													<>
+												:	<>
 														<Camera className="h-12 w-12 text-gray-400 mb-4" />
 														<div className="flex flex-col items-center text-sm text-gray-600">
 															<label
@@ -433,7 +435,7 @@ export default function CreateTournamentPage() {
 															<p className="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 10MB</p>
 														</div>
 													</>
-												)}
+												}
 											</CardContent>
 										</Card>
 									</FormControl>

@@ -78,7 +78,7 @@ model Registration {
 model Team {
   id           String         @id @default(cuid())
   teamName     String
-  tournamentId String         @unique
+  tournamentId String
   tournament   Tournament     @relation(fields: [tournamentId], references: [id])
   TeamPlayer   String[]
   createdAt    DateTime       @default(now())

@@ -341,7 +341,7 @@ export default function LeaderboardManagement({
 			</Card>
 
 			{/* Existing Leaderboard Entries List */}
-			<Card>
+			<Card className="mt-4">
 				<CardHeader>
 					<CardTitle>Current Leaderboard</CardTitle>
 					<CardDescription>Manage your existing leaderboard entries</CardDescription>

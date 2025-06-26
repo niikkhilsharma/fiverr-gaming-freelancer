@@ -119,4 +119,7 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+	.community-color {
+		background-color: oklch(0.67 0.15 57.2);
+	}
 }

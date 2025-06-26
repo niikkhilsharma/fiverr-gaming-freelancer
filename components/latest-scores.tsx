@@ -3,7 +3,7 @@ import { Leaderboard } from '@prisma/client'
 
 export default function LatestScores({ latestTournamentLeaderboard }: { latestTournamentLeaderboard: Leaderboard[] }) {
 	return (
-		<Card className="bg-[#a50000]/30">
+		<Card className="">
 			<CardHeader>
 				<CardTitle>Tournament Results</CardTitle>
 			</CardHeader>
@@ -11,7 +11,7 @@ export default function LatestScores({ latestTournamentLeaderboard }: { latestTo
 				<div>
 					<div className="rounded-md border">
 						<div className="grid grid-cols-9 bg-muted p-3 font-medium">
-							<div className="col-span-1 text-center">S.no</div>
+							<div className="col-span-1 text-center">No.</div>
 							<div className="col-span-6">Team</div>
 							<div className="col-span-2 text-center">Score</div>
 						</div>
