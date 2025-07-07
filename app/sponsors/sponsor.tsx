@@ -14,8 +14,14 @@ import { ExternalLink, Mail, Building, Users } from 'lucide-react'
 import { Sponsors } from '@prisma/client'
 import axios from 'axios'
 import { toast } from 'sonner'
+import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 
 export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] }) {
+	const router = useRouter()
+	const pathname = usePathname()
+	const searchParams = useSearchParams()
+	const activeTab = searchParams.get('tab') === 'contact' ? 'contact' : 'sponsors'
+
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
@@ -91,10 +97,28 @@ export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] 
 				</div>
 			</div>
 
-			<Tabs defaultValue="sponsors" className="w-full mb-12">
+			<Tabs defaultValue={activeTab} className="w-full mb-12">
 				<TabsList className="grid w-full grid-cols-2 mb-8">
-					<TabsTrigger value="sponsors">Current Sponsors</TabsTrigger>
-					<TabsTrigger value="contact">Become a Sponsor</TabsTrigger>
+					<TabsTrigger
+						onClick={() => {
+							const params = new URLSearchParams(searchParams.toString())
+							params.set('tab', 'sponsors')
+							router.push(`${pathname}?${params.toString()}`)
+							console.log(`${pathname}?${params.toString()}`)
+						}}
+						value="sponsors">
+						Current Sponsors
+					</TabsTrigger>
+					<TabsTrigger
+						onClick={() => {
+							const params = new URLSearchParams(searchParams.toString())
+							params.set('tab', 'contact')
+							router.push(`${pathname}?${params.toString()}`)
+							console.log(`${pathname}?${params.toString()}`)
+						}}
+						value="contact">
+						Become a Sponsor
+					</TabsTrigger>
 				</TabsList>
 
 				<TabsContent value="sponsors">

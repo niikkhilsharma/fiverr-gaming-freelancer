@@ -22,7 +22,7 @@ export default function Footer() {
 						<Link href="/privacy" className="text-sm font-medium text-muted-foreground hover:text-foreground">
 							Privacy
 						</Link>
-						<Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+						<Link href="/sponsors?tab=contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">
 							Contact
 						</Link>
 					</nav>
