@@ -5,7 +5,7 @@ interface EmailTemplateProps {
 	link: string
 }
 
-export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = async ({ firstName, link }) => {
+export const ForgotPasswordEmailTemplate: React.FC<Readonly<EmailTemplateProps>> = async ({ firstName, link }) => {
 	console.log(firstName, link, 'from client side')
 	return (
 		<div>

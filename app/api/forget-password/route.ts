@@ -1,6 +1,6 @@
-import { EmailTemplate } from '@/app/email-template'
-import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { ForgotPasswordEmailTemplate } from '@/app/email-template'
+import { NextResponse } from 'next/server'
 import z from 'zod'
 import prisma from '@/lib/prisma/prisma'
 import jwt from 'jsonwebtoken'
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 			from: 'delivered@resend.dev',
 			to: email,
 			subject: 'Reset Your Password',
-			react: await EmailTemplate({ firstName: user.firstName || 'there', link: resetLink }),
+			react: await ForgotPasswordEmailTemplate({ firstName: user.firstName || 'there', link: resetLink }),
 		})
 
 		if (error) {

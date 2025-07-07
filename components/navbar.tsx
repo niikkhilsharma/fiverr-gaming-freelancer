@@ -25,6 +25,7 @@ export default function Navbar({ isAuth, avatar, isAdmin }: { isAuth: boolean; a
 		{ name: 'Tournament', href: '/admin/tournament/all' },
 		{ name: 'Leaderboard', href: '/admin/leaderboard' },
 		{ name: 'Sponsors', href: '/admin/sponsors' },
+		{ name: 'Sponsors Inquiry', href: '/admin/sponsors/inquiry' },
 	]
 
 	const navigation = isAdmin ? adminNavigation : userNavigation
@@ -88,6 +89,19 @@ export default function Navbar({ isAuth, avatar, isAdmin }: { isAuth: boolean; a
 										{item.name}
 									</Link>
 								))}
+
+								<Link
+									href={'/login'}
+									className="text-base font-medium transition-colors hover:text-primary"
+									onClick={() => setIsOpen(false)}>
+									Login
+								</Link>
+								<Link
+									href={'/signup'}
+									className="text-base font-medium transition-colors hover:text-primary"
+									onClick={() => setIsOpen(false)}>
+									Signup
+								</Link>
 							</nav>
 
 							<div className="mt-8">

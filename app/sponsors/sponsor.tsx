@@ -12,13 +12,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ExternalLink, Mail, Building, Users } from 'lucide-react'
 import { Sponsors } from '@prisma/client'
+import axios from 'axios'
+import { toast } from 'sonner'
 
 export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] }) {
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
 		company: '',
-		sponsorshipType: '',
 		message: '',
 	})
 
@@ -30,15 +31,29 @@ export default function SponsorsComp({ allSponsors }: { allSponsors: Sponsors[] 
 		setFormData(prev => ({ ...prev, [name]: value }))
 	}
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		setIsSubmitting(true)
 
-		// Simulate form submission
-		setTimeout(() => {
-			setIsSubmitting(false)
+		try {
+			const response = await axios.post('/api/admin/sponsors/inquiry', {
+				name: formData.name,
+				email: formData.email,
+				companyName: formData.company,
+				message: formData.message,
+			})
+
+			if (response.status === 200) {
+				toast.success('Your inquiry has been submitted successfully!')
+			}
+
 			setIsSubmitted(true)
-		}, 1500)
+		} catch (error) {
+			console.log(error)
+			toast.error('Failed to submit your inquiry. Please try again later.')
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	if (isSubmitted) {

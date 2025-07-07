@@ -19,6 +19,7 @@ export default auth(async function middleware(request) {
 		'/reset-password',
 		'/about-us',
 		'/rules',
+		'/api/admin/sponsors/inquiry',
 		'/contact',
 		'/toc',
 		'/privacy-policy',

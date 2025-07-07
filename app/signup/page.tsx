@@ -14,7 +14,7 @@ export default async function RegisterPage() {
 	}
 
 	return (
-		<div className="container mx-auto flex min-h-screen flex-col items-center justify-center py-10">
+		<div className="px-4 container mx-auto flex min-h-screen flex-col items-center justify-center py-10">
 			<div className="mx-auto w-full max-w-3xl space-y-6">
 				<div className="space-y-2 text-center">
 					<h1 className="text-3xl font-bold">Create an account</h1>

@@ -14,7 +14,7 @@ export default async function LoginPage() {
 	}
 
 	return (
-		<div className="container flex min-h-screen flex-col items-center justify-center mx-auto">
+		<div className="container px-4 flex min-h-screen flex-col items-center justify-center mx-auto">
 			<div className="mx-auto w-full max-w-md space-y-6">
 				<div className="space-y-2 text-center">
 					<h1 className="text-3xl font-bold">Login</h1>
